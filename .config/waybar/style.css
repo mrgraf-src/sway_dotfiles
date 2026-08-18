@@ -1,0 +1,223 @@
+/* ==========================================================================
+   ШПОРГАЛКА ПО CSS-ТЕГАМ И СВОЙСТВАМ WAYBAR (Справочник)
+   ==========================================================================
+   
+   1. СЕЛЕКТОРЫ (ЧТО МЫ КУРСИРУЕМ):
+      * {}                          - Глобальные стили для ВСЕХ элементов панели.
+      window#waybar                 - Сама полоса панели (весь бар целиком).
+      #workspaces                   - Контейнер блока рабочих столов.
+      #workspaces button            - Кнопка конкретного воркспейса.
+      #workspaces button.active     - Кнопка ТЕКУЩЕГО (активного) воркспейса.
+      #mpris, #cpu, #clock          - Конкретный модуль по его ID из config.
+      tooltip                       - Всплывающая подсказка при наведении.
+
+   2. РАЗМЕРЫ И ОТСТУПЫ (ИЗ ЧЕГО СКЛАДЫВАЕТСЯ КНОПКА):
+      padding: 6px 12px;            - Внутренние отступы (Верх/Низ | Лево/Право).
+                                      Увеличиваешь их -> кнопка становится толще и шире.
+      margin: 4px 7px;              - Внешние отступы (управляют расстоянием МЕЖДУ модулями).
+      min-height: 0;                - Сбрасывает минимальную высоту (нужно всегда).
+      min-width: 20px;              - Минимальная ширина элемента.
+
+   3. ФОРМА И РАМКИ:
+      border-radius: 8px;           - Скругление углов (если 100px — будет круглая кнопка/таблетка).
+      border: 1px solid @surface1;  - Тонкая рамка вокруг модуля (толщина | стиль | цвет).
+      box-shadow: ...               - Тени (в Waybar вместо нижних границ часто используют тени).
+
+   4. ЦВЕТА И ФОН:
+      background: @mauve;           - Цвет фона (можно использовать цвета из @define-color).
+      background: alpha(#000, 0.5); - Прозрачный цвет (цвет | прозрачность от 0 до 1).
+      color: @text;                 - Цвет текста и иконок внутри модуля.
+
+   ========================================================================== */
+
+@define-color base   #1a1b26;
+@define-color mantle #16161e;
+@define-color crust  #16161e;
+
+@define-color text     #c0caf5;
+@define-color subtext0 #a9b1d6;
+@define-color subtext1 #c0caf5;
+
+@define-color surface0 #292e42;
+@define-color surface1 #414868;
+@define-color surface2 #545c7e;
+
+@define-color overlay0 #565f89;
+@define-color overlay1 #737aa2;
+
+@define-color blue     #7aa2f7;
+@define-color lavender #9d7cd8;
+@define-color sapphire #7dcfff;
+@define-color sky      #7dcfff;
+@define-color teal     #1abc9c;
+@define-color green    #9ece6a;
+@define-color yellow   #e0af68;
+@define-color peach    #ff9e64;
+@define-color maroon   #db4b4b;
+@define-color red      #f7768e;
+@define-color mauve    #9d7cd8;
+@define-color pink     #bb9af7;
+
+* {
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 13px;
+}
+
+window#waybar {
+  background: transparent;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+/* ОТРЫВАЕМ ПАНЕЛЬ ОТ ВЕРХА И КРАЕВ ЭКРАНА */
+.modules-left {
+  margin-left: 8px;   /* Отступ всей левой группы от левого края монитора */
+  margin-top: 6px;    /* Отступ сверху */
+}
+
+.modules-center {
+  margin-top: 6px;    /* Отступ сверху для часов/центра */
+}
+
+.modules-right {
+  margin-right: 8px;  /* Отступ всей правой группы от правого края монитора */
+  margin-top: 6px;    /* Отступ сверху */
+}
+
+window#waybar.hidden {
+  opacity: 0.1;
+}
+
+#workspaces button {
+  margin: 5px 2px;  
+  padding: 2px 6px; 
+  border: 1px solid @surface1;
+  background: alpha(@surface0, 0.8);
+  color: @text;
+  border-radius: 4px;
+  transition: all 200ms ease;
+}
+
+#workspaces button:hover {
+  background: @surface1;
+  color: @accent-hover;
+  border: 1px solid @mauve;
+}
+
+#workspaces button.active {
+  border-radius: 100px;
+  border: 1px solid @mauve;
+  color: @crust;
+  background: @mauve;
+  min-width: 20px;
+  font-size: 15px;
+}
+
+#workspaces button.focused {
+  background: @surface1;
+  color: @accent-hover;
+  border: 1px solid @mauve;
+}
+
+/* ==========================================================================
+   ЕДИНЫЙ БАЗОВЫЙ РАЗМЕР ДЛЯ ВСЕХ МОДУЛЕЙ ПАНЕЛИ
+   Здесь задаются отступы, скругления и шрифты один раз для всех!
+   ========================================================================== */
+#mpris,
+#memory,
+#cpu,
+#temperature,
+#power-profiles-daemon,
+#language,
+#custom-power,
+#battery,
+#backlight,
+#wireplumber,
+#network,
+#clock,
+#pulseaudio,
+#idle_inhibitor,
+#tray,
+#disk,
+#custom-layout,
+#custom-cpu-combined,
+#custom-gpu-combined,
+#keyboard {
+  border-radius: 6px;            
+  margin: 5px 3px;               /* Внешние отступы (расстояние между блоками) */
+  padding: 2px 6px;              /* Внутренние отступы (компактность текста внутри) */
+  color: #181825;
+  font-weight: bold;
+  border: 1px solid @teal;
+}
+
+/* Особенность для mpris, чтобы левый отступ аккуратно смотрелся */
+#mpris {
+  margin-left: 2px;
+  border: 1px solid @surface1;
+  background: alpha(@surface0, 0.8);
+  color: @text;
+  border-radius: 8px;
+  transition: all 200ms ease;
+}
+
+/* ==========================================================================
+   ИНДИВИДУАЛЬНЫЕ ЦВЕТА МОДУЛЕЙ
+   Здесь мы меняем только фоны (background-color), размеры уже настроены выше!
+   ========================================================================== */
+#tray { background-color: #fab387; }
+#pulseaudio { background-color: #fab387; }
+#idle_inhibitor { background-color: #fab387; }
+#language { background-color: #fab387; }
+#temperature { background-color: #fab387; }
+#power-profiles-daemon { background-color: #fab387; }
+#cpu { background-color: #fab387; }
+#memory { background-color: #fab387; }
+#backlight { background-color: #fab387; }
+#wireplumber { background-color: #f9e2af; }
+#keyboard { background-color: #f9e2af; }
+
+#custom-cpu-combined { background-color: #fab387; }
+#custom-gpu-combined { background-color: #fab387; }
+
+#battery { background-color: #f38ba8; }
+#battery.warning, #battery.critical, #battery.urgent { background-color: #ff0000; color: #FFFF00; }
+#battery.charging { background-color: #a6e3a1; color: #181825; }
+
+#network { 
+  background-color: #94e2d5; 
+  padding-right: 10px; /* чуть шире для иконки */
+}
+
+#clock { 
+  background-color: @teal; 
+}
+
+#custom-power { 
+  background-color: #f2cdcd; 
+}
+
+#disk { 
+  background-color: #a6e3a1; 
+}
+
+#custom-layout { 
+  background: @lavender; 
+}
+
+/* Всплывающие подсказки (Tooltips) */
+tooltip {
+  border-radius: 8px;
+  border: 1px solid @surface1;
+  padding: 12px;
+  background-color: #131822;
+}
+
+tooltip label {
+  padding: 5px;
+  background-color: #131822;
+}
+
