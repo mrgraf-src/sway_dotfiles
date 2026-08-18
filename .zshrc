@@ -25,3 +25,10 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Подключаем подсветку синтаксиса (зеленый/красный/ошибки на лету)
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Прыжки по словам с помощью Ctrl + Стрелочки
+bindkey '^[[1;5D' backward-word      # Ctrl + Стрелка влево -> прыжок на слово назад
+bindkey '^[[1;5C' forward-word       # Ctrl + Стрелка вправо -> прыжок на слово вперед
+
+# Удаление слова назад по Ctrl + Backspace
+bindkey '^H' backward-kill-word
