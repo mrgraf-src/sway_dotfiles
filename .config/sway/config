@@ -1,1 +1,239 @@
-1
+################################################
+#  Настройки насвая.
+################################################
+
+set $mod Mod4
+
+output * bg  /home/mrgraf/wallpaper/wallpaper.jpg fill
+
+input type:keyboard {
+    xkb_layout "us,ru"
+    xkb_options "grp:win_space_toggle"
+}
+
+# mouse button for dragging.
+floating_modifier $mod normal
+
+corner_radius 6
+
+# smart_gaps off
+# smart_borders off
+
+gaps inner 10
+gaps outer 5
+
+default_border pixel 0
+
+
+################################################
+#  Настройка workspace на несколько мониторов
+################################################
+
+output DP-2 pos 0 0 res 2560x1440@165Hz
+output DP-1 pos 2560 0 res 2560x1440@165Hz
+
+set $monL DP-2
+set $monR DP-1
+
+set $ws1L " L1 "
+set $ws2L " L2 "
+set $ws3L " L3 "
+set $ws4L " L4 "
+set $ws5L " L5 "
+set $ws6L " L6 "
+
+set $ws1R " R1 "
+set $ws2R " R2 "
+set $ws3R " R3 "
+set $ws4R " R4 "
+set $ws5R " R5 "
+set $ws6R " R6 "
+
+workspace $ws1L output $monL
+workspace $ws2L output $monL
+workspace $ws3L output $monL
+workspace $ws4L output $monL
+workspace $ws5L output $monL
+workspace $ws6L output $monL
+
+workspace $ws1R output $monR
+workspace $ws2R output $monR
+workspace $ws3R output $monR
+workspace $ws4R output $monR
+workspace $ws5R output $monR
+workspace $ws6R output $monR
+
+# --- бинды для левого монитора ---
+bindsym $mod+1 workspace $ws1L
+bindsym $mod+2 workspace $ws2L
+bindsym $mod+3 workspace $ws3L
+bindsym $mod+4 workspace $ws4L
+bindsym $mod+5 workspace $ws5L
+bindsym $mod+6 workspace $ws6L
+
+# --- бинды для правого монитора ---
+bindsym $mod+Shift+1 workspace $ws1R
+bindsym $mod+Shift+2 workspace $ws2R
+bindsym $mod+Shift+3 workspace $ws3R
+bindsym $mod+Shift+4 workspace $ws4R
+bindsym $mod+Shift+5 workspace $ws5R
+bindsym $mod+Shift+6 workspace $ws6R
+
+
+# Переключение на следующий/предыдущий воркспейс по Mod + Стрелка Вправо/Влево
+bindsym $mod+Right workspace next
+bindsym $mod+Left workspace prev
+
+# Перемещение текущего окна на следующий/предыдущий воркспейс с зажатым Shift
+bindsym $mod+Shift+Right move container to workspace next
+bindsym $mod+Shift+Left move container to workspace prev
+
+# f1...f12 оставил для третьего монитора, который будет центральным 
+
+
+################################################
+#  Правила для окон
+################################################
+# что бы узнать id окна
+# swaymsg -t get_tree | grep -i "Thunar" -C 3 
+# swaymsg -t get_tree | grep -E '"app_id"|"class"'
+################################################
+
+# Плавающие картинки
+for_window [app_id="qimgv"] floating enable
+
+# Ловим любые окна Thunar, в заголовке которых есть Rename или Переименовать (для переименования файлов)
+for_window [app_id="thunar" title=".*(Rename|Переименовать).*"] floating enable
+for_window [class="Thunar" title=".*(Rename|Переименовать).*"] floating enable
+
+# Ловим остальные диалоговые окна Thunar (свойства, прогресс копирования, ошибки)
+for_window [app_id="thunar" title=".*(Progress|Properties|Confirm|Файл|Свойства|Подтверждение).*"] floating enable
+for_window [class="Thunar" title=".*(Progress|Properties|Confirm|Файл|Свойства|Подтверждение).*"] floating enable
+
+# Все окна открытые по ctrl+click будут плавающими
+# А само окно телеги тайловым 
+for_window [app_id="telegram-desktop" title="^(?!Telegram$).*"] floating enable
+for_window [class="TelegramDesktop" title="^(?!Telegram$).*"] floating enable
+
+for_window [window_type="dialog"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+
+for_window [app_id="com.interversehq.qView"] floating enable
+for_window [app_id="org.prismlauncher.PrismLauncher"] floating enable
+for_window [app_id="org.keepassxc.KeePassXC"] floating enable
+for_window [app_id="install4j-com-offsetexplorer-ui-MainApp_offsetexplorer"] floating enable
+
+for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolute position 0 0, border pixel 0
+
+################################################
+#  Запуск софтин
+################################################ 
+
+exec systemctl --user import-environment QT_QPA_PLATFORMTHEME
+# Либо сразу прописать экспорт переменной для сессии:
+exec dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME=qt6ct
+
+# своя вкладка в браузере, аля новая вкладка, только открывается моя html
+exec python3 -m http.server 8080 --directory /home/mrgraf/homepage
+
+set $gnome-theme Dracula-alt-style
+set $icon-theme Mkos-Big-Sur
+set $cursor-theme oreo_teal_cursors
+
+exec_always {
+    sleep 1
+    gsettings set org.gnome.desktop.interface gtk-theme '$gnome-theme'
+    gsettings set org.gnome.desktop.interface icon-theme '$icon-theme'
+    gsettings set org.gnome.desktop.interface cursor-theme '$cursor-theme'
+}
+
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+# Гарантируем, что порталы увидят графическую сессию Wayland
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+# Мягко перезапускаем портал сразу после старта Sway
+exec systemctl --user restart xdg-desktop-portal
+
+exec systemctl --user import-environment _JAVA_AWT_WM_NONREPARENTING
+exec hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment --systemd _JAVA_AWT_WM_NONREPARENTING
+
+exec systemctl --user import-environment QT_QPA_PLATFORMTHEME
+
+exec easyeffects --daemon
+exec autotiling-rs
+exec swaykbdd
+exec_always ~/.config/waybar/launch.sh
+
+
+################################################
+#  Бинды
+################################################
+
+# Reload the configuration file
+bindsym $mod+Shift+r reload
+
+# Special keys to adjust volume via PulseAudio
+bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+
+# Управление mpv через сокет, если он запущен, или через playerctl для остального софта
+bindsym --locked XF86AudioPlay exec echo "cycle pause" | socat - ~/.config/mpv/socket 2>/dev/null || playerctl play-pause
+bindsym --locked XF86AudioPause exec echo "cycle pause" | socat - ~/.config/mpv/socket 2>/dev/null || playerctl play-pause
+bindsym --locked XF86AudioNext exec echo "playlist-next" | socat - ~/.config/mpv/socket 2>/dev/null || playerctl next
+bindsym --locked XF86AudioPrev exec echo "playlist-prev" | socat - ~/.config/mpv/socket 2>/dev/null || playerctl previous
+
+# Special keys to adjust brightness via brightnessctl
+bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+
+# Scratchpad:
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+z floating toggle
+
+# Move focus to the parent container
+bindsym $mod+a focus parent
+
+# Start a terminal
+bindsym $mod+Return exec kitty
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+bindsym $mod+d exec fuzzel
+
+# Запуск импровизированного плеера
+bindsym $mod+Next exec mpv /home/mrgraf/0x/0xMC_F_031125-Main, exec kitty cava , exec kitty tty-clock -s -c -C 4
+
+# Уйти в спящий режим по Super + F11
+bindsym $mod+F11 exec systemctl suspend
+
+bindsym $mod+c exec cliphist list | fuzzel -d |с cliphist decode | wl-copy
+
+bindsym $mod+e exec thunar
+
+# Просто скриншот всего экрана в папку Картинки + копирование в буфер
+bindsym Print exec grim /home/mrgraf/Картинки/$(date +%Y-%m-%d_%H-%M-%S).png && grim - | wl-copy
+bindsym $mod+Shift+s exec flameshot gui
+
+bindsym $mod+Shift+e exec ~/.config/waybar/My_Scripts/powermenu.sh
+
+
+
+
+
+
+
