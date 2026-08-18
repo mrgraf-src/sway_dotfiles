@@ -130,10 +130,6 @@ for_window [app_id="flameshot"] floating enable, fullscreen disable, move absolu
 #  Запуск софтин
 ################################################ 
 
-exec systemctl --user import-environment QT_QPA_PLATFORMTHEME
-# Либо сразу прописать экспорт переменной для сессии:
-exec dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME=qt6ct
-
 # своя вкладка в браузере, аля новая вкладка, только открывается моя html
 exec python3 -m http.server 8080 --directory /home/mrgraf/homepage
 
