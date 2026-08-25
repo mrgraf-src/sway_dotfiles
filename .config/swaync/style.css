@@ -1,0 +1,187 @@
+/* Основной фон окна уведомлений */
+.control-center {
+    background: rgba(30, 30, 46, 0.95);
+    border: 1px solid rgba(137, 180, 250, 0.2);
+    border-radius: 12px;
+    padding: 12px;
+    color: #cdd6f4;
+}
+
+/* Карточка отдельного уведомления */
+.notification {
+    background: rgba(49, 50, 68, 0.85);
+    border: 1px solid rgba(69, 71, 90, 0.5);
+    border-radius: 8px;
+    padding: 8px;
+    margin: 6px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка закрытия уведомления (крестик) */
+.notification-default-action .close-button {
+    background: transparent;
+    color: #a6adc8;
+    border-radius: 4px;
+}
+.notification-default-action .close-button:hover {
+    background: rgba(243, 139, 168, 0.2);
+    color: #f38ba8;
+}
+
+/* Текст заголовка и содержимого */
+.summary {
+    font-weight: bold;
+    font-size: 10px;
+    color: #cdd6f4;
+}
+
+.body {
+    font-size: 12px;
+    color: #bac2de;
+}
+
+/* Виджеты внутри центра уведомлений (кнопки плеера, DND и т.д.) */
+.widget-title {
+    color: #cdd6f4;
+    font-size: 14px;
+    margin: 6px;
+}
+
+.widget-buttons-grid {
+    background: rgba(40, 42, 54, 0.6);
+    border-radius: 8px;
+    padding: 6px;
+    margin: 6px 0;
+}
+
+.widget-buttons-grid button {
+    background: rgba(69, 71, 90, 0.4);
+    border-radius: 6px;
+    color: #cdd6f4;
+    padding: 8px;
+}
+
+.widget-buttons-grid button:hover {
+    background: #89b4fa;
+    color: #1e1e2e;
+}
+
+/* ── MPRIS Player Widget ────────────────────────────────────────── */
+.widget-mpris {
+  padding: 0;
+  border: none;
+  border-radius: 18px;
+  background: transparent;
+  margin-bottom: 14px;
+}
+
+.widget-mpris .widget-mpris-player {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 16px;
+}
+
+.widget-mpris .widget-mpris-album-art {
+  background: none;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 16px;
+  margin-right: 12px;
+}
+
+.widget-mpris .widget-mpris-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(248, 248, 252, 0.98);
+  margin-bottom: 4px;
+  background: none;
+}
+
+.widget-mpris .widget-mpris-subtitle {
+  font-size: 14px;
+  color: rgba(215, 220, 225, 0.78);
+  background: none;
+}
+
+.widget-mpris .widget-mpris-player button {
+  all: unset;
+  background: transparent;
+  border-radius: 50%;
+  padding: 7px;
+  color: rgba(215, 220, 225, 0.88);
+  font-size: 14px;
+  min-width: 34px;
+  min-height: 34px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.widget-mpris .widget-mpris-player button:hover {
+  background-color: rgba(150, 155, 165, 0.40);
+  color: rgba(248, 248, 252, 0.98);
+}
+
+.widget-mpris .widget-mpris-player button:disabled {
+  color: rgba(215, 220, 225, 0.2);
+}
+
+
+/* На всякий случай гасим иконку и текст внутри заглушки */
+placeholder image,
+placeholder label,
+.no-notifications-label {
+    opacity: 0;
+    font-size: 0px;
+    min-height: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+.widget-volume,
+.widget-backlight,
+.widget-dnd,
+.widget-title,
+.widget-buttons-grid,
+.widget-mpris .widget-mpris-player {
+    background-color: @background-light;
+    border: 1px solid @surface1;
+    margin: 6px 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+/* Главный текст заголовка («Уведомления») */
+.widget-title > label {
+    font-size: 14px; /* Настрой нужный размер */
+    font-weight: bold;
+}
+
+/* Кнопка очистки («Очистить») */
+.widget-title > button {
+    font-size: 11px; /* Сделай текст кнопки меньше */
+    padding: 4px 8px; /* Подправь внутренние отступы, если нужно */
+}
+
+
+/* Скрываем скроллбар в GTK/Webkit окружении SwayNC */
+* {
+  scrollbar-width: none; /* для совместимости */
+}
+
+scrolledwindow slider {
+  /* Скрытие ползунка прокрутки в GTK-приложениях/оболочках */
+  min-height: 0px;
+  min-width: 0px;
+  background: transparent;
+}
+
+/* Полное отключение отображения скроллбара */
+scrollbar {
+  opacity: 0;
+  min-width: 0px;
+  min-height: 0px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
