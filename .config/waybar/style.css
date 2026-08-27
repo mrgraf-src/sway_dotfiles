@@ -145,6 +145,8 @@ window#waybar.hidden {
 #custom-layout,
 #custom-cpu-combined,
 #custom-gpu-combined,
+#custom-notification,
+#custom-vpn,
 #keyboard {
   border-radius: 6px;            
   margin: 5px 3px;               /* Внешние отступы (расстояние между блоками) */
@@ -164,11 +166,26 @@ window#waybar.hidden {
   transition: all 200ms ease;
 }
 
+#custom-vpn {
+  font-weight: bold;
+  transition: all 200ms ease;
+}
+
+#custom-vpn.disconnected {
+  background: alpha(@surface0, 0.8); 
+  color: @text;
+}
+
+#custom-vpn.connected {
+  background-color: @red; /* когда VPN горит и работает */
+  color: #181825;
+}
+
 /* ==========================================================================
    ИНДИВИДУАЛЬНЫЕ ЦВЕТА МОДУЛЕЙ
    Здесь мы меняем только фоны (background-color), размеры уже настроены выше!
    ========================================================================== */
-#tray { background-color: #fab387; }
+
 #pulseaudio { background-color: #fab387; }
 #idle_inhibitor { background-color: #fab387; }
 #language { background-color: #fab387; }
@@ -187,11 +204,17 @@ window#waybar.hidden {
 #battery.warning, #battery.critical, #battery.urgent { background-color: #ff0000; color: #FFFF00; }
 #battery.charging { background-color: #a6e3a1; color: #181825; }
 
+#tray {   
+  background: @surface1;
+  color: @accent-hover;
+  border: 1px solid @mauve; }
+
 #network { 
   background-color: #94e2d5; 
   padding-right: 10px; /* чуть шире для иконки */
 }
 
+#custom-notification,
 #clock { 
   background-color: @teal; 
 }
