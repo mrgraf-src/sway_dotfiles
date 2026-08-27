@@ -12,7 +12,9 @@
             "mpris"
         ],
         "modules-center": [
-            "clock"
+            "custom/vpn",
+            "clock",
+            "network"
         ],
         "modules-right": [
             "group/tray-group",
@@ -26,6 +28,22 @@
             "disk",
             "disk#media",      
         ],
+        "network": {
+        "interface": "enp8s0",
+        "interval": 2,
+        "format-ethernet": "↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}",
+        "format-disconnected": "⚠ Отключено",
+        "tooltip": false,
+        "max-length": 50
+        },
+        "custom/vpn": {
+            "exec": "/home/mrgraf/.config/waybar/My_Scripts/vpn_toggle.sh",
+            "return-type": "json",
+            "interval": 2,
+            "on-click": "/home/mrgraf/.config/waybar/My_Scripts/vpn_toggle.sh toggle",
+            "tooltip": true
+        },
+        
         "memory": {
         "format": " RAM: {used:0.1f}G / {total:0.1f}G",
         "tooltip": false
@@ -67,14 +85,9 @@
         "spacing": 10,
         },
         "clock": {
-            "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-            "format-alt": "{:%Y-%m-%d}"
-        },
-        "network": {
-            "format-wifi": " {signalStrength}%",
-            "format-ethernet": " Connected",
-            "format-disconnected": "⚠ Disconnected",
-            "tooltip-format": "{ifname} via {gwaddr} "
+            "format": "{:%H:%M %d.%m}",
+            "tooltip": false,
+            "on-click": "swaync-client -t -sw"
         },
         "pulseaudio": {
             "format": "{volume}% {icon} {format_source}",
@@ -98,7 +111,8 @@
             "player-icons": {
                 "default": "",
                 "mpv": "",
-                "spotify": ""
+                "spotify": "",
+                "zen": ""
             },
             "status-icons": {
                 "paused": ""
@@ -143,7 +157,8 @@
             }
         },
         "clock": {
-            "format": "{:%H:%M}"
+            "format": "{:%H:%M}",
+            "tooltip": false
         },
         // ==========================================
         // {free} — сколько свободно (например, 1.2 TB)
