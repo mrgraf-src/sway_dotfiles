@@ -22,7 +22,7 @@ corner_radius 6
 gaps inner 10
 gaps outer 5
 
-default_border pixel 0
+default_border pixel 2 
 
 
 ################################################
@@ -91,16 +91,31 @@ bindsym $mod+Shift+Left move container to workspace prev
 # f1...f12 оставил для третьего монитора, который будет центральным 
 
 
+bindsym $mod+F8 exec ~/.local/bin/autospace.sh
+
 ################################################
 #  Правила для окон
 ################################################
 # что бы узнать id окна
-# swaymsg -t get_tree | grep -i "Thunar" -C 3 
+# swaymsg -t get_tree | grep -i "org.telegram.desktop" -C 3 
 # swaymsg -t get_tree | grep -E '"app_id"|"class"'
 ################################################
 
 # Плавающие картинки
 for_window [app_id="qimgv"] floating enable
+
+# Делаем окно Picture-in-Picture из Zen Browser плавающим
+for_window [app_id="zen" title="Picture-in-Picture"] floating enable
+for_window [app_id="zen" title="Картинка в картинке"] floating enable
+
+# Универсальное правило для майнкрафта любой версии (по заголовку окна)
+for_window [title="^Minecraft\\*.*$"] floating enable
+
+# На случай, если Java-приложение определяется по X11-классу
+for_window [class="sun-awt-X11-XWindowPeer" title="^Minecraft.*$"] floating enable
+for_window [app_id="minecraft" title="^Minecraft.*$"] floating enable
+for_window [class="org-springframework-boot-loader-PropertiesLauncher"] floating enable
+
 
 # Ловим любые окна Thunar, в заголовке которых есть Rename или Переименовать (для переименования файлов)
 for_window [app_id="thunar" title=".*(Rename|Переименовать).*"] floating enable
@@ -110,10 +125,18 @@ for_window [class="Thunar" title=".*(Rename|Переименовать).*"] floa
 for_window [app_id="thunar" title=".*(Progress|Properties|Confirm|Файл|Свойства|Подтверждение).*"] floating enable
 for_window [class="Thunar" title=".*(Progress|Properties|Confirm|Файл|Свойства|Подтверждение).*"] floating enable
 
-# Все окна открытые по ctrl+click будут плавающими
-# А само окно телеги тайловым 
+# --- Telegram Rules ---
+# Само главное окно остается в тайлинге
+for_window [app_id="org.telegram.desktop" title="^Telegram$"] floating disable
+for_window [app_id="telegram-desktop" title="^Telegram$"] floating disable
+
+# Встроенный просмотрщик медиа (Media Viewer) - строго в floating
+for_window [app_id="org.telegram.desktop" title=".*(Media viewer|Просмотр медиа).*"] floating enable
+for_window [app_id="telegram-desktop" title=".*(Media viewer|Просмотр медиа).*"] floating enable
+
+# Любые дочерние/всплывающие окна Телеги
+for_window [app_id="org.telegram.desktop" title="^(?!Telegram$).*"] floating enable
 for_window [app_id="telegram-desktop" title="^(?!Telegram$).*"] floating enable
-for_window [class="TelegramDesktop" title="^(?!Telegram$).*"] floating enable
 
 for_window [window_type="dialog"] floating enable
 for_window [window_role="pop-up"] floating enable
@@ -144,6 +167,7 @@ exec_always {
     gsettings set org.gnome.desktop.interface cursor-theme '$cursor-theme'
 }
 
+exec wl-clip-persist --clipboard regular
 exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
 
@@ -160,9 +184,12 @@ exec hash dbus-update-activation-environment 2>/dev/null && dbus-update-activati
 exec systemctl --user import-environment QT_QPA_PLATFORMTHEME
 
 exec easyeffects --daemon
-exec autotiling-rs
+exec autotiling-rs --limit 0
 exec swaykbdd
 exec_always ~/.config/waybar/launch.sh
+
+exec pkill -9 swaync
+exec swaync -c ~/.config/swaync/config.json -s ~/.config/swaync/style.css
 
 
 ################################################
@@ -193,7 +220,7 @@ bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
 bindsym $mod+b splith
-bindsym $mod+v splitv
+# bindsym $mod+v splitv
 
 # Make the current focus fullscreen
 bindsym $mod+f fullscreen
@@ -217,13 +244,17 @@ bindsym $mod+Next exec mpv /home/mrgraf/0x/0xMC_F_031125-Main, exec kitty cava ,
 # Уйти в спящий режим по Super + F11
 bindsym $mod+F11 exec systemctl suspend
 
-bindsym $mod+c exec cliphist list | fuzzel -d |с cliphist decode | wl-copy
+
 
 bindsym $mod+e exec thunar
 
 # Просто скриншот всего экрана в папку Картинки + копирование в буфер
 bindsym Print exec grim /home/mrgraf/Картинки/$(date +%Y-%m-%d_%H-%M-%S).png && grim - | wl-copy
-bindsym $mod+Shift+s exec flameshot gui
+
+
+
+# Скриншот области (замораживает экраны и копирует выделенное)
+bindsym $mod+Shift+s exec wayfreeze --after-freeze-cmd 'grim -g "$(slurp)" - | wl-copy; killall wayfreeze'
 
 bindsym $mod+Shift+e exec ~/.config/waybar/My_Scripts/powermenu.sh
 
@@ -231,5 +262,8 @@ bindsym $mod+Shift+e exec ~/.config/waybar/My_Scripts/powermenu.sh
 
 
 
+exec copyq --start-server
 
+for_window [app_id="com.github.hluk.copyq"] floating enable, resize set 650 500, move position center
 
+bindsym $mod+v exec copyq toggle
