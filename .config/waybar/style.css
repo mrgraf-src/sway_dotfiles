@@ -148,12 +148,18 @@ window#waybar.hidden {
 #custom-notification,
 #custom-vpn,
 #keyboard {
-  border-radius: 6px;            
-  margin: 5px 3px;               /* Внешние отступы (расстояние между блоками) */
-  padding: 2px 6px;              /* Внутренние отступы (компактность текста внутри) */
-  color: #181825;
-  font-weight: bold;
-  border: 1px solid @teal;
+  margin: 5px 2px;  
+  padding: 2px 6px; 
+  border: 1px solid @surface1;
+  background: alpha(@surface0, 0.8);
+  color: @text;
+  border-radius: 4px;
+}
+
+#tray {   
+  background: @surface1;
+  color: @accent-hover;
+  border: 1px solid @mauve;
 }
 
 /* Особенность для mpris, чтобы левый отступ аккуратно смотрелся */
@@ -162,74 +168,37 @@ window#waybar.hidden {
   border: 1px solid @surface1;
   background: alpha(@surface0, 0.8);
   color: @text;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: all 200ms ease;
 }
 
 #custom-vpn {
   font-weight: bold;
+  border-radius: 4px;
   transition: all 200ms ease;
 }
 
 #custom-vpn.disconnected {
   background: alpha(@surface0, 0.8); 
+  border-radius: 4px;
   color: @text;
 }
 
 #custom-vpn.connected {
-  background-color: @red; /* когда VPN горит и работает */
+  background-color: @red; /* когда жепа горит значит работа идёт и VPN работает */
   color: #181825;
+  border-radius: 15px;
 }
+
+
 
 /* ==========================================================================
    ИНДИВИДУАЛЬНЫЕ ЦВЕТА МОДУЛЕЙ
    Здесь мы меняем только фоны (background-color), размеры уже настроены выше!
    ========================================================================== */
 
-#pulseaudio { background-color: #fab387; }
-#idle_inhibitor { background-color: #fab387; }
-#language { background-color: #fab387; }
-#temperature { background-color: #fab387; }
-#power-profiles-daemon { background-color: #fab387; }
-#cpu { background-color: #fab387; }
-#memory { background-color: #fab387; }
-#backlight { background-color: #fab387; }
-#wireplumber { background-color: #f9e2af; }
-#keyboard { background-color: #f9e2af; }
 
-#custom-cpu-combined { background-color: #fab387; }
-#custom-gpu-combined { background-color: #fab387; }
 
-#battery { background-color: #f38ba8; }
-#battery.warning, #battery.critical, #battery.urgent { background-color: #ff0000; color: #FFFF00; }
-#battery.charging { background-color: #a6e3a1; color: #181825; }
-
-#tray {   
-  background: @surface1;
-  color: @accent-hover;
-  border: 1px solid @mauve; }
-
-#network { 
-  background-color: #94e2d5; 
-  padding-right: 10px; /* чуть шире для иконки */
-}
-
-#custom-notification,
-#clock { 
-  background-color: @teal; 
-}
-
-#custom-power { 
-  background-color: #f2cdcd; 
-}
-
-#disk { 
-  background-color: #a6e3a1; 
-}
-
-#custom-layout { 
-  background: @lavender; 
-}
 
 /* Всплывающие подсказки (Tooltips) */
 tooltip {
@@ -243,4 +212,3 @@ tooltip label {
   padding: 5px;
   background-color: #131822;
 }
-
