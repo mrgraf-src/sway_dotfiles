@@ -8,3 +8,4 @@ sway dotfiles
 Настроил уведомляшку
 <img width="2559" height="70" alt="изображение" src="https://github.com/user-attachments/assets/ab2141ec-2482-41a1-9030-eb327d5fb573" />
 
+<img width="2559" height="597" alt="изображение" src="https://github.com/user-attachments/assets/64ccfd71-9d72-4b88-8875-3171a0f10938" />
