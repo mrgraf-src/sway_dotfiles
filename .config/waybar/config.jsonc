@@ -10,6 +10,7 @@
             "sway/workspaces",
             "sway/scratchpad",
             "mpris"
+
         ],
         "modules-center": [
             "custom/vpn",
@@ -28,6 +29,13 @@
             "disk",
             "disk#media",      
         ],
+        "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+        },
         "network": {
         "interface": "enp8s0",
         "interval": 2,
@@ -73,6 +81,12 @@
         "format": " CPU:{usage}% ",
         "tooltip": false
         },
+        "custom/cpu-temp": {
+            "exec": "~/.config/waybar/My_Scripts/cpu-temp.sh",
+            "interval": 3,
+            "format": "{}"
+        },
+
         "temperature": {
         // "thermal-zone": 2,
          "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
@@ -103,10 +117,10 @@
             "tooltip": false
         },
         "mpris": {
-            "format": " {player_icon} {artist} - {title} {position}/{length}",
-            "format-paused": " {status_icon} <i>{artist} - {title}</i> {position}/{length}",
+            "format": " {player_icon} {artist} - {title}",
+            "format-paused": " {status_icon} <i>{artist} - {title}</i> ",
             "tooltip": false,
-            "max-length": 80,
+            "max-length": 90,
             "interval": 1,
             "player-icons": {
                 "default": "",
