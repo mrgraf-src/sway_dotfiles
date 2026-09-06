@@ -239,12 +239,14 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec fuzzel
 
 # Запуск импровизированного плеера
-bindsym $mod+Next exec mpv /home/mrgraf/0x/0xMC_F_031125-Main, exec kitty cava , exec kitty tty-clock -s -c -C 4
+bindsym $mod+Next exec kew , exec kitty tty-clock -s -c -C 4
+
+
 
 # Уйти в спящий режим по Super + F11
 bindsym $mod+F11 exec systemctl suspend
 
-
+bindsym $mod+Shift+BackSpace exec ~/.local/bin/deltrack
 
 bindsym $mod+e exec thunar
 
