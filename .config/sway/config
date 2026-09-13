@@ -199,6 +199,12 @@ exec swaync -c ~/.config/swaync/config.json -s ~/.config/swaync/style.css
 # Reload the configuration file
 bindsym $mod+Shift+r reload
 
+
+# Переключение фокуса на следующее окно по Super + Tab
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
+
+
 # Special keys to adjust volume via PulseAudio
 bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
 bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
